@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, Engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 from src.utils.settings import get_settings
 
@@ -20,4 +20,6 @@ class EngineContainer:
     def get_engine(self) -> Engine:
         return self.engine
 
-Session = sessionmaker(EngineContainer().engine)
+def get_session() -> Session:
+    session_maker = sessionmaker(EngineContainer().engine)
+    return session_maker()
