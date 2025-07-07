@@ -24,6 +24,7 @@ def get_app() -> FastAPI:
     )
     settings = get_settings()
     bind_routes(application, settings)
+    application.state.settings = settings
     return application
 
 
