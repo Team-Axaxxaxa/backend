@@ -16,3 +16,6 @@ class Settings:
             'host': self.POSTGRES_HOST,
             'port': self.POSTGRES_PORT,
         }
+
+def get_settings() -> Settings:
+    return Settings()
