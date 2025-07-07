@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     APP_HOST: str = environ.get('APP_HOST', 'http://0.0.0.0')
     APP_PORT: int = int(environ.get('APP_PORT', 8080))
 
+    SECRET_KEY: str = environ.get('SECRET_KEY', 'secret')
+
     @property
     def db_settings(self) -> dict:
         return {
