@@ -24,7 +24,7 @@ def create_access_token(id: str) -> str:
     return encode_jwt
 
 
-def get_token(request: Request):
+def get_token(request: Request) -> str:
     authorization = request.headers.get('Authorization')
     if not authorization:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Token not found')
@@ -35,7 +35,7 @@ def get_token(request: Request):
     return authorization
 
 
-def get_test_taker(token: str = Depends(get_token), session: Session = Depends(get_session)):
+def get_test_taker(token: str = Depends(get_token), session: Session = Depends(get_session)) -> TestTaker:
     try:
         settings = get_settings()
         payload = jwt.decode(token, settings.SECRET_KEY)
