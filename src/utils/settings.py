@@ -17,5 +17,14 @@ class Settings:
             'port': self.POSTGRES_PORT,
         }
 
+    @property
+    def db_link(self) -> str:
+        user = self.POSTGRES_USER
+        password = self.POSTGRES_PASSWORD
+        host = self.POSTGRES_HOST
+        port = str(self.POSTGRES_PORT)
+        db = self.POSTGRES_DB
+        return f'postgresql+psycopg2://{user}:{password}@{host}:{port}/{db}'
+
 def get_settings() -> Settings:
     return Settings()

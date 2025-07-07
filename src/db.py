@@ -6,13 +6,9 @@ from src.utils.settings import get_settings
 
 class EngineContainer:
     def __init__(self):
-        settings = get_settings().db_settings
-        user = settings['user']
-        password = settings['password']
-        port = str(settings['port'])
-        db = settings['db']
+        settings = get_settings()
         self.engine = create_engine(
-            f'postgresql+psycopg2://{user}:{password}@postgres:{port}/{db}',
+            settings.db_link,
             isolation_level='READ COMMITTED'
         )
 
