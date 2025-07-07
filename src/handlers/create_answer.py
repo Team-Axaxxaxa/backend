@@ -5,7 +5,7 @@ from starlette import status
 
 from src.db import get_session
 from src.models import TestTaker, Answer, Question
-from src.schemas.answer import AnswerResponse, AnswerRequest
+from src.schemas.create_answer import CreateAnswerResponse, CreateAnswerRequest
 from src.utils.test_maker_jwt import get_test_taker
 
 api_router = APIRouter(tags=["Url"])
@@ -13,7 +13,7 @@ api_router = APIRouter(tags=["Url"])
 @api_router.post(
     "/answer",
     status_code=status.HTTP_200_OK,
-    response_model=AnswerResponse,
+    response_model=CreateAnswerResponse,
     responses={
         status.HTTP_404_NOT_FOUND: {
             "description": "Не найден такой вопрос",
@@ -21,7 +21,7 @@ api_router = APIRouter(tags=["Url"])
     },
 )
 async def create_answer(
-    model: AnswerRequest = Body(...),
+    model: CreateAnswerRequest = Body(...),
     test_taker: TestTaker = Depends(get_test_taker),
     session: Session = Depends(get_session),
 ):

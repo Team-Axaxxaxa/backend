@@ -3,13 +3,13 @@ from pydantic import BaseModel, UUID4
 from src.models.answer import OptionEnum
 
 
-class AnswerResponse(BaseModel):
+class CreateAnswerResponse(BaseModel):
     id: UUID4
     test_taker: UUID4
     question: UUID4
     option: OptionEnum
 
 
-class AnswerRequest(BaseModel):
+class CreateAnswerRequest(BaseModel):
     question: UUID4
     option: OptionEnum
