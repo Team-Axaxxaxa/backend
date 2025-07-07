@@ -6,7 +6,7 @@ from starlette import status
 
 from src.db import get_session
 from src.models import TestTaker, Question, Answer
-from src.schemas.get_random_unfilled_question import RandomUnfilledQuestionResponse
+from src.schemas.question import QuestionResponse
 from src.utils.test_maker_jwt import get_test_taker
 
 api_router = APIRouter(tags=["Url"])
@@ -14,7 +14,7 @@ api_router = APIRouter(tags=["Url"])
 @api_router.get(
     "/question/random",
     status_code=status.HTTP_200_OK,
-    response_model=RandomUnfilledQuestionResponse,
+    response_model=QuestionResponse,
     responses= {
         status.HTTP_404_NOT_FOUND: {
             "description": "Нет не пройденных вопросов",
@@ -36,7 +36,7 @@ async def get_random_unfilled_question(
             detail="Нет не пройденных вопросов",
         )
 
-    return RandomUnfilledQuestionResponse(
+    return QuestionResponse(
         id=question.id,
         category=question.category,
         text=question.text,

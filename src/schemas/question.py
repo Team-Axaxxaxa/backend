@@ -3,7 +3,7 @@ from pydantic import BaseModel, UUID4
 from src.models.question import IncreaseOptionEnum
 
 
-class RandomUnfilledQuestionResponse(BaseModel):
+class QuestionResponse(BaseModel):
     id: UUID4
     category: UUID4
     text: str
