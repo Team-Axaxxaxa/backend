@@ -10,6 +10,7 @@ from src.db import get_session
 from src.models import TestTaker, Answer, Question, Result, CategoryResult
 from src.models.question_in_category import QuestionInCategory
 from src.schemas.result import ResultResponse
+from src.utils.question_count import get_answers_count, get_questions_count
 from src.utils.test_maker_jwt import get_test_taker
 
 api_router = APIRouter(tags=["Test taking"])
@@ -32,12 +33,9 @@ def create_result(
     if test_taker.result:
         return ResultResponse(id=test_taker.result.id)
 
-    answer_count = (session.query(func.count())
-                    .select_from(Answer)
-                    .where(Answer.test_taker == test_taker.id)
-                    .scalar())
+    answer_count = get_answers_count(test_taker, session)
 
-    questions_count = session.query(Question).where(Question.for_male == test_taker.is_male).count()
+    questions_count = get_questions_count(test_taker, session)
 
     if answer_count != questions_count:
         raise HTTPException(
