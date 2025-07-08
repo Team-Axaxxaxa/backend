@@ -37,7 +37,7 @@ def create_result(
                     .where(Answer.test_taker == test_taker.id)
                     .scalar())
 
-    questions_count = session.query(Question).count()
+    questions_count = session.query(Question).where(Question.for_male == test_taker.is_male).count()
 
     if answer_count != questions_count:
         raise HTTPException(

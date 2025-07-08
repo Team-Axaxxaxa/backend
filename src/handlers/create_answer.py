@@ -25,7 +25,7 @@ def create_answer(
     test_taker: TestTaker = Depends(get_test_taker),
     session: Session = Depends(get_session),
 ):
-    question_query = select(Question).where(Question.id == model.id)
+    question_query = select(Question).where(Question.id == model.question)
     question = session.scalar(question_query)
 
     if not question:
@@ -45,3 +45,10 @@ def create_answer(
         answer = Answer(question=model.question, option=model.option, test_taker=test_taker.id)
         session.add(answer)
     session.commit()
+
+    return CreateAnswerResponse(
+        id=answer.id,
+        test_taker=answer.test_taker,
+        question=answer.question,
+        option=answer.option,
+    )

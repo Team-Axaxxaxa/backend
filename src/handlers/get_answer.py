@@ -30,7 +30,7 @@ def get_answer(
     question_uuid = UUID4(question_id)
 
     answer_query = select(Answer).where(
-        and_(Answer.question == question_uuid, Answer.test_taker == test_taker)
+        and_(Answer.question == question_uuid, Answer.test_taker == test_taker.id)
     )
     answer = session.scalar(answer_query)
 

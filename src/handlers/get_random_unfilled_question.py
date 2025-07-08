@@ -28,7 +28,7 @@ def get_random_unfilled_question(
 ):
     question_query = select(Question).where(
         ~exists().where(and_(Answer.question == Question.id, Answer.test_taker == test_taker.id))
-    ).order_by(func.random())
+    ).where(Question.for_male == test_taker.is_male).order_by(func.random())
     question = session.scalars(question_query).first()
 
     if not question:

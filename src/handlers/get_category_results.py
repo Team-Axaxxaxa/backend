@@ -18,7 +18,7 @@ class BadCategory(Exception):
 
 
 @api_router.get(
-    '/category-results/{result_id}',
+    '/category_results/{result_id}',
     status_code=status.HTTP_200_OK,
     response_model=CategoryResultsResponse,
     responses= {
