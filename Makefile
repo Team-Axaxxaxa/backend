@@ -1,11 +1,11 @@
 start-db:
-	docker compose up postgres
+	docker compose up -d postgres
 
 migrate:
 	alembic upgrade head
 
 start-app:
-	docker compose up script
+	docker compose up --build -d script
 
 stop:
 	docker compose down
