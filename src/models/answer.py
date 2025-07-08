@@ -1,15 +1,10 @@
-import enum
-
 from sqlalchemy import Column, ForeignKey, Enum
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import UUID
 
 from .base import Base
+from .option_enum import OptionEnum
 
-class OptionEnum(enum.Enum):
-    YES = 'yes'
-    NO = 'no'
-    I_DONT_KNOW = 'idk'
 
 class Answer(Base):
     __tablename__ = 'answer'
