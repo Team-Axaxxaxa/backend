@@ -13,7 +13,7 @@ api_router = APIRouter(tags=["Test taking"])
 
 
 @api_router.get(
-    "/answer/{question_id}",
+    "/answer/by_id/{question_id}",
     status_code=status.HTTP_200_OK,
     response_model=GetAnswerResponse,
     responses={
