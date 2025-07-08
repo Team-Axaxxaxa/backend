@@ -8,7 +8,7 @@ from starlette import status
 
 from src.db import get_session
 from src.models import Result, CategoryResult, Category
-from src.schemas.get_category_results import CategoryResultsResponse
+from src.schemas.get_category_results import CategoryResultsResponse, CategoryResultModel
 
 api_router = APIRouter(tags=['Test results'])
 
@@ -52,7 +52,7 @@ def get_category_result(
         if not category:
             raise BadCategory()
 
-        category_result = CategoryResult(category_name=category.name, score=model.score)
+        category_result = CategoryResultModel(category_name=category.name, score=model.score)
         response_array.append(category_result)
 
     return CategoryResultsResponse(category_results=response_array)
