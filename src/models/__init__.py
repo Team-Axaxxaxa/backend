@@ -6,6 +6,7 @@ from .category import Category
 from .category_result import CategoryResult
 from .employment_analysis import EmploymentAnalysis
 from .question import Question
+from .question_in_category import QuestionInCategory
 from .result import Result
 from .short_analysis import ShortAnalysis
 from .test_taker import TestTaker
@@ -21,5 +22,6 @@ __all__ = [
     'ShortAnalysis',
     'Question',
     'Result',
-    'TestTaker'
+    'TestTaker',
+    'QuestionInCategory',
 ]
