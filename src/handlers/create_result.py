@@ -49,10 +49,16 @@ def create_result(
     session.add(result)
     session.commit()
 
-    test_taker.result = result
-    session.commit()
+    try:
+        count_category_results(result, test_taker, session)
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail='Ошибка при создании результата'
+        )
 
-    count_category_results(result, test_taker, session)
+    test_taker.result = result.id
+    session.commit()
 
     return ResultResponse(id=result.id)
 
@@ -69,8 +75,8 @@ def count_category_results(result: Result, test_taker: TestTaker, session: Sessi
         questions_in_category: Iterable[QuestionInCategory] = session.scalars(question_in_category_query).all()
 
         for question_in_category in questions_in_category:
-            category_result = get_or_create_category_result(result, question_in_category.question, session)
-            category_result.result += 1
+            category_result = get_or_create_category_result(result, question_in_category.category, session)
+            category_result.score += 1
             session.commit()
 
 
