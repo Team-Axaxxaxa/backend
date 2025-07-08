@@ -10,7 +10,7 @@ from src.db import get_session
 from src.models import Result, CategoryResult, Category
 from src.schemas.get_category_results import CategoryResultsResponse
 
-api_router = APIRouter(tags=['Url'])
+api_router = APIRouter(tags=['Test results'])
 
 
 class BadCategory(Exception):

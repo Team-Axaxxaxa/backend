@@ -12,7 +12,8 @@ from src.models.question_in_category import QuestionInCategory
 from src.schemas.result import ResultResponse
 from src.utils.test_maker_jwt import get_test_taker
 
-api_router = APIRouter(tags=["Url"])
+api_router = APIRouter(tags=["Test taking"])
+
 
 @api_router.post(
     "/result",

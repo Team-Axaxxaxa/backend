@@ -8,7 +8,8 @@ from src.db import get_session
 from src.models import Question
 from src.schemas.question import QuestionResponse
 
-api_router = APIRouter(tags=["Url"])
+api_router = APIRouter(tags=["Test taking"])
+
 
 @api_router.get(
     "/question/{id}",

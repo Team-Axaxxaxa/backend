@@ -8,7 +8,7 @@ from src.models import TestTaker, Answer, Question
 from src.schemas.create_answer import CreateAnswerResponse, CreateAnswerRequest
 from src.utils.test_maker_jwt import get_test_taker
 
-api_router = APIRouter(tags=["Url"])
+api_router = APIRouter(tags=["Test taking"])
 
 @api_router.post(
     "/answer",

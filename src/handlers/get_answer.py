@@ -9,7 +9,8 @@ from src.models import TestTaker, Answer
 from src.schemas.get_answer import GetAnswerResponse
 from src.utils.test_maker_jwt import get_test_taker
 
-api_router = APIRouter(tags=["Url"])
+api_router = APIRouter(tags=["Test taking"])
+
 
 @api_router.get(
     "/answer/{question_id}",

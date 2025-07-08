@@ -7,7 +7,7 @@ from src.models import TestTaker
 from src.schemas.create_test_taker import CreateTestTakerResponse, CreateTestTakerRequest
 from src.utils.test_maker_jwt import create_access_token
 
-api_router = APIRouter(tags=["Url"])
+api_router = APIRouter(tags=["Test taking"])
 
 @api_router.post(
     "/test_taker",

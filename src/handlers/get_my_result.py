@@ -8,7 +8,7 @@ from src.models import TestTaker, Result
 from src.schemas.result import ResultResponse
 from src.utils.test_maker_jwt import get_test_taker
 
-api_router = APIRouter(tags=["Url"])
+api_router = APIRouter(tags=["Test results"])
 
 
 @api_router.get(
