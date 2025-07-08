@@ -20,7 +20,7 @@ api_router = APIRouter(tags=["Url"])
         }
     },
 )
-def get_random_unfilled_question(
+def get_question(
     id: str = Path(...),
     session: Session = Depends(get_session),
 ):

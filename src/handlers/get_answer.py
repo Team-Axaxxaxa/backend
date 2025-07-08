@@ -21,7 +21,7 @@ api_router = APIRouter(tags=["Url"])
         }
     },
 )
-def create_answer(
+def get_answer(
     question_id: str = Path(...),
     test_taker: TestTaker = Depends(get_test_taker),
     session: Session = Depends(get_session),
