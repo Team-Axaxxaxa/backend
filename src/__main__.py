@@ -17,7 +17,7 @@ def bind_routes(application: FastAPI, setting: Settings) -> None:
 
 def get_app() -> FastAPI:
     application = FastAPI(
-        title='Url shortener',
+        title='Test MMPI',
         docs_url='/swagger',
         openapi_url='/openapi',
         version='1.0.0',
