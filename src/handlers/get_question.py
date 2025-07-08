@@ -36,8 +36,6 @@ async def get_random_unfilled_question(
 
     return QuestionResponse(
         id=question.id,
-        category=question.category,
         text=question.text,
         for_male=question.for_male,
-        increase_option=question.increase_option,
     )
