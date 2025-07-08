@@ -34,7 +34,7 @@ def create_result(
     answer_count = (session.query(func.count())
                     .select_from(Answer)
                     .where(Answer.test_taker == test_taker.id)
-                    .scalar)
+                    .scalar())
 
     questions_count = session.query(Question).count()
 
