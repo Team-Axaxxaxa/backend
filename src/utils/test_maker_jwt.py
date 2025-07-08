@@ -1,7 +1,9 @@
 import re
+from typing import Annotated
 
 from jose import jwt, JWTError
 from fastapi import Request, HTTPException, Depends
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from datetime import datetime, timezone, timedelta
 
 from pydantic import UUID4
@@ -24,7 +26,7 @@ def create_access_token(id: str) -> str:
     return encode_jwt
 
 
-def get_token(request: Request) -> str:
+def get_token_depricated(request: Request) -> str:
     authorization = request.headers.get('Authorization')
     if not authorization:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Token not found')
@@ -33,6 +35,12 @@ def get_token(request: Request) -> str:
     if not group:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Токен не корректный')
     return authorization
+
+
+security = HTTPBearer()
+
+def get_token(credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)]):
+    return credentials.credentials
 
 
 def get_test_taker(token: str = Depends(get_token), session: Session = Depends(get_session)) -> TestTaker:
