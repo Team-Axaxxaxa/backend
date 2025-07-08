@@ -9,3 +9,11 @@ start-app:
 
 stop:
 	docker compose down
+
+restart-app:
+	docker compose down script
+	docker compose rm -f script
+	docker compose up --build -d script
+
+logs:
+	docker compose logs
