@@ -4,22 +4,22 @@ from starlette import status
 
 from src.db import get_session
 from src.models import TestTaker
-from src.schemas.get_answer_count import AnswerCountResponse
-from src.utils.question_count import get_answers_count
+from src.schemas.get_question_count import QuestionCountResponse
+from src.utils.question_count import get_questions_count
 from src.utils.test_maker_jwt import get_test_taker
 
 api_router = APIRouter(tags=["Test taking"])
 
 
 @api_router.get(
-    "/answer/count",
+    "/question/count",
     status_code=status.HTTP_200_OK,
-    response_model=AnswerCountResponse,
+    response_model=QuestionCountResponse,
 )
-def get_answer_count(
+def get_question_count(
     test_taker: TestTaker = Depends(get_test_taker),
     session: Session = Depends(get_session),
 ):
-    answer_count = get_answers_count(test_taker, session)
+    question_count = get_questions_count(test_taker, session)
 
-    return AnswerCountResponse(count=answer_count)
+    return QuestionCountResponse(count=question_count)
