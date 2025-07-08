@@ -20,7 +20,7 @@ api_router = APIRouter(tags=["Url"])
         }
     },
 )
-async def create_answer(
+def create_answer(
     model: CreateAnswerRequest = Body(...),
     test_taker: TestTaker = Depends(get_test_taker),
     session: Session = Depends(get_session),

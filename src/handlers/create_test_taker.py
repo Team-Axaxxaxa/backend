@@ -14,7 +14,7 @@ api_router = APIRouter(tags=["Url"])
     status_code=status.HTTP_200_OK,
     response_model=CreateTestTakerResponse,
 )
-async def create_test_taker(
+def create_test_taker(
     model: CreateTestTakerRequest = Body(..., example={
         'is_male': True,
     }),

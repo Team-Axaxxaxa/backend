@@ -21,7 +21,7 @@ api_router = APIRouter(tags=["Url"])
         }
     },
 )
-async def get_random_unfilled_question(
+def get_random_unfilled_question(
     test_taker: TestTaker = Depends(get_test_taker),
     session: Session = Depends(get_session),
 ):
