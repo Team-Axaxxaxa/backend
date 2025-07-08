@@ -21,7 +21,7 @@ api_router = APIRouter(tags=["Test results"])
         }
     },
 )
-def get_result(
+def get_my_result(
     test_taker: TestTaker = Depends(get_test_taker),
     session: Session = Depends(get_session),
 ):
