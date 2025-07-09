@@ -13,6 +13,8 @@ services:
       interval: 2s
       timeout: 2s
       retries: 10
+    volumes:
+      - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
 
   migrator:
     build:
