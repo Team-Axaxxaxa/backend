@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PORT: ${POSTGRES_PORT}
+      PGPORT: ${POSTGRES_PORT}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 2s
@@ -22,6 +22,8 @@ services:
 
   migrator:
     image: ghcr.io/slash0t/mmpi-backend-migrator:${IMAGE_TAG}
+    env_file:
+      - .env
     depends_on:
       - postgres
     deploy:
@@ -31,6 +33,8 @@ services:
 
   script:
     image: ghcr.io/slash0t/mmpi-backend-script:${IMAGE_TAG}
+    env_file:
+      - .env
     depends_on:
       - postgres
       - migrator
