@@ -23,6 +23,7 @@ jobs:
           echo "APP_HOST=http://0.0.0.0" >> .env
           echo "APP_PORT=${{ secrets.APP_PORT }}" >> .env
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "POSTGRES_DATA_PATH=${{ secrets.POSTGRES_DATA_PATH }}" >> .env
 
       - name: Run docker compose
         uses: hoverkraft-tech/compose-action@v2.3.0
