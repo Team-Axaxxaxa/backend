@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:15
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGPORT: ${POSTGRES_PORT}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+    volumes:
+      - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  migrator:
+    image: ghcr.io/slash0t/mmpi-backend-migrator:${IMAGE_TAG}
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  script:
+    image: ghcr.io/slash0t/mmpi-backend-script:${IMAGE_TAG}
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - migrator
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "${APP_HOST}:${APP_PORT}${PATH_PREFIX}/health" ]
+      interval: 30s
+      timeout: 2s
+      retries: 10
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure

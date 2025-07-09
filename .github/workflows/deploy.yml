@@ -1,0 +1,95 @@
+name: Deploy on test environment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push-migrations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Log in to registry
+        uses: docker/login-action@v3
+        with:
+          registry: https://ghcr.io
+          username: ${{ secrets.DEPLOY_USER }}
+          password: ${{ secrets.GH_TOKEN }}
+
+      - name: Build and push Docker backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          target: migrator
+          push: true
+          tags: |
+            ghcr.io/slash0t/mmpi-backend-migrator:main
+            ghcr.io/slash0t/mmpi-backend-migrator:${{ github.sha }}
+
+  build-and-push-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Log in to registry
+        uses: docker/login-action@v3
+        with:
+          registry: https://ghcr.io
+          username: ${{ secrets.DEPLOY_USER }}
+          password: ${{ secrets.GH_TOKEN }}
+
+      - name: Build and push Docker backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          target: service
+          push: true
+          tags: |
+            ghcr.io/slash0t/mmpi-backend-script:main
+            ghcr.io/slash0t/mmpi-backend-script:${{ github.sha }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - build-and-push-migrations
+      - build-and-push-script
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" > .env
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> .env
+          echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
+          echo "PATH_PREFIX=${{ secrets.PATH_PREFIX }}" >> .env
+          echo "APP_HOST=${{ secrets.APP_HOST }}" >> .env
+          echo "APP_PORT=${{ secrets.APP_PORT }}" >> .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "POSTGRES_DATA_PATH=${{ secrets.POSTGRES_DATA_PATH }}" >> .env
+          echo "IMAGE_TAG=main" >> .env
+
+      - name: Import variables into environment
+        run: export $(grep -Ev '^\s*#|^\s*$' .env | xargs)
+
+      - name: Docker Stack Deploy
+        uses: cssnr/stack-deploy-action@v1
+        with:
+          name: mmpi-backend-main
+          file: docker-stack.yml
+          host: ${{ secrets.HOST }}
+          user: deploy
+          ssh_key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          env_file: .env
+          registry_auth: true
+          registry_host: "ghcr.io"
+          registry_user: ${{ secrets.DEPLOY_USER }}
+          registry_pass: ${{ secrets.GH_TOKEN }}
