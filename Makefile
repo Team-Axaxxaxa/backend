@@ -2,7 +2,7 @@ start-db:
 	docker compose up -d postgres
 
 migrate:
-	alembic upgrade head
+	docker compose up --build migrator
 
 start-app:
 	docker compose up --build -d script

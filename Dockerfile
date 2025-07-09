@@ -21,9 +21,9 @@ WORKDIR /$app
 
 RUN pip install -r requirements.txt
 
-FROM base as service
-
 ADD src src
+
+FROM base as service
 
 EXPOSE 8080
 
@@ -38,7 +38,6 @@ CMD alembic upgrade head
 
 FROM base as tester
 
-add src src
 add tests tests
 
 CMD pytest tests

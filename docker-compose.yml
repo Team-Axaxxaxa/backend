@@ -14,13 +14,27 @@ services:
       timeout: 2s
       retries: 10
 
-  script:
+  migrator:
     build:
       context: .
+      target: migrator
     env_file:
       - .env
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+
+  script:
+    build:
+      context: .
+      target: service
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
     ports:
       - "${APP_PORT}:${APP_PORT}"
     healthcheck:
