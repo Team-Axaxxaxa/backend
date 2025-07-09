@@ -83,8 +83,8 @@ jobs:
       - name: Docker Stack Deploy
         uses: cssnr/stack-deploy-action@v1
         with:
-          name: mmpi-backend
-          file: docker-stack.yaml
+          name: mmpi-backend-test
+          file: docker-stack.yml
           host: ${{ secrets.HOST }}
           user: deploy
           ssh_key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
