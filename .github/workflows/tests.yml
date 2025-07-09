@@ -33,3 +33,6 @@ jobs:
             migrator
             script
             tests
+
+      - name: Show Docker Compose Logs for Tests
+        run: docker compose -f ./docker-compose.yml logs tests
