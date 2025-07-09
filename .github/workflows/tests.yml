@@ -28,4 +28,8 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.3.0
         with:
           compose-file: "./docker-compose.yml"
-          services: tests
+          services: |
+            postgres
+            migrator
+            script
+            tests
