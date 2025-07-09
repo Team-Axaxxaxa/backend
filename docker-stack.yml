@@ -23,8 +23,7 @@ services:
   migrator:
     image: ghcr.io/slash0t/mmpi-backend-migrator:${IMAGE_TAG}
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     deploy:
       replicas: 1
       restart_policy:
@@ -33,10 +32,8 @@ services:
   script:
     image: ghcr.io/slash0t/mmpi-backend-script:${IMAGE_TAG}
     depends_on:
-      postgres:
-        condition: service_healthy
-      migrator:
-        condition: service_completed_successfully
+      - postgres
+      - migrator
     ports:
       - "${APP_PORT}:${APP_PORT}"
     healthcheck:
