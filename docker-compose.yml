@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:15
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+    volumes:
+      - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
+
+  migrator:
+    build:
+      context: .
+      target: migrator
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  script:
+    build:
+      context: .
+      target: service
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "${APP_HOST}:${APP_PORT}${PATH_PREFIX}/health" ]
+      interval: 30s
+      timeout: 2s
+      retries: 10
+
+  tests:
+    build:
+      context: .
+      target: tester
+    env_file:
+      - .env
+    depends_on:
+      script:
+        condition: service_healthy
