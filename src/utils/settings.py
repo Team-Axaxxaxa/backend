@@ -17,6 +17,9 @@ class Settings(BaseSettings):
 
     QR_CODE_SUPPLIER: str = environ.get('QR_CODE_SUPPLIER', 'simple')
 
+    AI_MODEL: str = environ.get('AI_MODEL', 'mock')
+    OPEN_ROUTER_API_KEY: str = environ.get('OPEN_ROUTER_API_KEY', 'open_api_key')
+
     @property
     def db_settings(self) -> dict:
         return {

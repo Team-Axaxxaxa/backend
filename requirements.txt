@@ -8,3 +8,4 @@ uvicorn~=0.35.0
 starlette~=0.46.2
 pydantic-settings~=2.10.1
 python-jose~=3.5.0
+openai~=1.95.0
