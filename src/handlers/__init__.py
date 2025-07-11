@@ -9,6 +9,7 @@ from src.handlers.get_category_results import api_router as get_category_results
 from src.handlers.get_my_result import api_router as get_my_result_router
 from src.handlers.get_answer_count import api_router as get_answer_count_router
 from src.handlers.get_question_count import api_router as get_question_count_router
+from src.handlers.get_qr_code import api_router as get_qr_code_router
 
 list_of_routes = [
     health_router,
@@ -22,6 +23,7 @@ list_of_routes = [
     get_my_result_router,
     get_answer_count_router,
     get_question_count_router,
+    get_qr_code_router,
 ]
 
 __all__ = [
