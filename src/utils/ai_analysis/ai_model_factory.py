@@ -1,4 +1,4 @@
-from src.utils.ai_analysis.ai_model import AiModel, MockAiModel, GeminiAiModel
+from src.utils.ai_analysis.ai_model import AiModel, MockAiModel, GeminiAiModel, EchoAiModel
 from src.utils.settings import get_settings
 
 
@@ -9,6 +9,8 @@ class AiModelFactory:
 
         if ai_model == 'mock':
             return MockAiModel()
+        if ai_model == 'echo':
+            return EchoAiModel()
         if ai_model == 'gemini':
             return GeminiAiModel()
         else:

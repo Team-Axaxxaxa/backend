@@ -16,6 +16,11 @@ class MockAiModel(AiModel):
         return "Mock"
 
 
+class EchoAiModel(AiModel):
+    def analyse(self, data: str) -> str:
+        return data
+
+
 class GeminiAiModel(AiModel):
     def analyse(self, data: str) -> str:
         client = get_client()
