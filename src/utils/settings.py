@@ -15,6 +15,8 @@ class Settings(BaseSettings):
 
     SECRET_KEY: str = environ.get('SECRET_KEY', 'secret')
 
+    QR_CODE_SUPPLIER: str = environ.get('QR_CODE_SUPPLIER', 'simple')
+
     @property
     def db_settings(self) -> dict:
         return {
