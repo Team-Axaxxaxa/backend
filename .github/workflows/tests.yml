@@ -20,11 +20,13 @@ jobs:
           echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> .env
           echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
           echo "PATH_PREFIX=${{ secrets.PATH_PREFIX }}" >> .env
-          echo "APP_HOST=http://0.0.0.0" >> .env
+          echo "APP_HOST=${{ secrets.APP_HOST }}" >> .env
           echo "APP_PORT=${{ secrets.APP_PORT }}" >> .env
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
           echo "POSTGRES_DATA_PATH=${{ secrets.POSTGRES_DATA_PATH }}" >> .env
           echo "QR_CODE_SUPPLIER=${{ secrets.QR_CODE_SUPPLIER }}" >> .env
+          echo "AI_MODEL=${{ secrets.AI_MODEL }}" >> .env
+          echo "OPEN_ROUTER_API_KEY=${{ secrets.OPEN_ROUTER_API_KEY }}" >> .env
 
       - name: Run docker compose
         uses: hoverkraft-tech/compose-action@v2.3.0
