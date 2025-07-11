@@ -76,6 +76,7 @@ jobs:
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
           echo "POSTGRES_DATA_PATH=${{ secrets.POSTGRES_DATA_PATH_TEST }}" >> .env
           echo "IMAGE_TAG=test" >> .env
+          echo "QR_CODE_SUPPLIER=${{ secrets.QR_CODE_SUPPLIER }}" >> .env
 
       - name: Import variables into environment
         run: export $(grep -Ev '^\s*#|^\s*$' .env | xargs)
