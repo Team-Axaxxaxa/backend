@@ -4,11 +4,10 @@ from .answer import Answer
 from .base import Base
 from .category import Category
 from .category_result import CategoryResult
-from .employment_analysis import EmploymentAnalysis
+from .ui_analysis import UiAnalysis
 from .question import Question
 from .question_in_category import QuestionInCategory
 from .result import Result
-from .short_analysis import ShortAnalysis
 from .test_taker import TestTaker
 
 __all__ = [
@@ -18,8 +17,7 @@ __all__ = [
     'Answer',
     'Category',
     'CategoryResult',
-    'EmploymentAnalysis',
-    'ShortAnalysis',
+    'UiAnalysis',
     'Question',
     'Result',
     'TestTaker',
