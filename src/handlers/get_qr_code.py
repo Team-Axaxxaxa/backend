@@ -12,7 +12,7 @@ api_router = APIRouter(tags=["Test results"])
     status_code=status.HTTP_307_TEMPORARY_REDIRECT,
     response_class=RedirectResponse,
 )
-def get_question(
+def get_qr_code(
     url: str = Path(...),
 ):
     qr_code_supplier = QrCodeSupplierFactory.create()
