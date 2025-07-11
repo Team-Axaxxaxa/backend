@@ -1,9 +1,9 @@
-name: Deploy on test environment
+name: Deploy
 
 on:
   push:
     branches:
-      - test
+      - main
 
 jobs:
   build-and-push-migrations:
@@ -27,7 +27,7 @@ jobs:
           target: migrator
           push: true
           tags: |
-            ghcr.io/slash0t/mmpi-backend-migrator:test
+            ghcr.io/slash0t/mmpi-backend-migrator:main
             ghcr.io/slash0t/mmpi-backend-migrator:${{ github.sha }}
 
   build-and-push-script:
@@ -51,7 +51,7 @@ jobs:
           target: service
           push: true
           tags: |
-            ghcr.io/slash0t/mmpi-backend-script:test
+            ghcr.io/slash0t/mmpi-backend-script:main
             ghcr.io/slash0t/mmpi-backend-script:${{ github.sha }}
 
   deploy:
@@ -69,13 +69,13 @@ jobs:
           echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
           echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
           echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> .env
-          echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT_TEST }}" >> .env
+          echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
           echo "PATH_PREFIX=${{ secrets.PATH_PREFIX }}" >> .env
           echo "APP_HOST=${{ secrets.APP_HOST }}" >> .env
-          echo "APP_PORT=${{ secrets.APP_PORT_TEST }}" >> .env
+          echo "APP_PORT=${{ secrets.APP_PORT }}" >> .env
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-          echo "POSTGRES_DATA_PATH=${{ secrets.POSTGRES_DATA_PATH_TEST }}" >> .env
-          echo "IMAGE_TAG=test" >> .env
+          echo "POSTGRES_DATA_PATH=${{ secrets.POSTGRES_DATA_PATH }}" >> .env
+          echo "IMAGE_TAG=main" >> .env
           echo "QR_CODE_SUPPLIER=${{ secrets.QR_CODE_SUPPLIER }}" >> .env
           echo "AI_MODEL=${{ secrets.AI_MODEL }}" >> .env
           echo "OPEN_ROUTER_API_KEY=${{ secrets.OPEN_ROUTER_API_KEY }}" >> .env
@@ -86,7 +86,7 @@ jobs:
       - name: Docker Stack Deploy
         uses: cssnr/stack-deploy-action@v1
         with:
-          name: mmpi-backend-test
+          name: mmpi-backend-main
           file: docker-stack.yml
           host: ${{ secrets.HOST }}
           user: deploy

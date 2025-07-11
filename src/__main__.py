@@ -2,6 +2,7 @@ from logging import getLogger
 from urllib.parse import urlparse
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from uvicorn import run
 
 from src.handlers import list_of_routes
@@ -22,6 +23,15 @@ def get_app() -> FastAPI:
         openapi_url='/openapi',
         version='1.0.0',
     )
+
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
     settings = get_settings()
     bind_routes(application, settings)
     application.state.settings = settings
