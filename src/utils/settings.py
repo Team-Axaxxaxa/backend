@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     AI_MODEL: str = environ.get('AI_MODEL', 'mock')
     OPEN_ROUTER_API_KEY: str = environ.get('OPEN_ROUTER_API_KEY', 'open_api_key')
 
+    TEST_TOKEN_DURATION_MINUTES: int = int(environ.get('TEST_TOKEN_DURATION_MINUTES', 14400))
+
     @property
     def db_settings(self) -> dict:
         return {
