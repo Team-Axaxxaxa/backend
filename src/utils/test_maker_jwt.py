@@ -1,7 +1,7 @@
 import re
 from typing import Annotated
 
-from jose import jwt, JWTError
+from jose import jwt, JWTError, ExpiredSignatureError
 from fastapi import Request, HTTPException, Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from datetime import datetime, timezone, timedelta
@@ -47,13 +47,10 @@ def get_test_taker(token: str = Depends(get_token), session: Session = Depends(g
     try:
         settings = get_settings()
         payload = jwt.decode(token, settings.SECRET_KEY)
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Токен истек')
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Токен не валидный!')
-
-    expire = payload.get('exp')
-    expire_time = datetime.fromtimestamp(int(expire), tz=timezone.utc)
-    if (not expire) or (expire_time < datetime.now(timezone.utc)):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Токен истек')
 
     test_taker_id = payload.get('id')
     if not test_taker_id:
