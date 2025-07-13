@@ -14,18 +14,18 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" > .env
-          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+          echo "POSTGRES_DB=${{ vars.POSTGRES_DB }}" > .env
+          echo "POSTGRES_USER=${{ vars.POSTGRES_USER }}" >> .env
           echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
-          echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> .env
-          echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
-          echo "PATH_PREFIX=${{ secrets.PATH_PREFIX }}" >> .env
-          echo "APP_HOST=${{ secrets.APP_HOST }}" >> .env
-          echo "APP_PORT=${{ secrets.APP_PORT }}" >> .env
+          echo "POSTGRES_HOST=${{ vars.POSTGRES_HOST }}" >> .env
+          echo "POSTGRES_PORT=${{ vars.POSTGRES_PORT }}" >> .env
+          echo "PATH_PREFIX=${{ vars.PATH_PREFIX }}" >> .env
+          echo "APP_HOST=${{ vars.APP_HOST }}" >> .env
+          echo "APP_PORT=${{ vars.APP_PORT }}" >> .env
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-          echo "POSTGRES_DATA_PATH=${{ secrets.POSTGRES_DATA_PATH }}" >> .env
-          echo "QR_CODE_SUPPLIER=${{ secrets.QR_CODE_SUPPLIER }}" >> .env
-          echo "AI_MODEL=${{ secrets.AI_MODEL }}" >> .env
+          echo "POSTGRES_DATA_PATH=${{ vars.POSTGRES_DATA_PATH }}" >> .env
+          echo "QR_CODE_SUPPLIER=${{ vars.QR_CODE_SUPPLIER }}" >> .env
+          echo "AI_MODEL=${{ vars.AI_MODEL }}" >> .env
           echo "OPEN_ROUTER_API_KEY=${{ secrets.OPEN_ROUTER_API_KEY }}" >> .env
 
       - name: Run docker compose
