@@ -52,5 +52,5 @@ services:
     env_file:
       - .env
     depends_on:
-      script:
-        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
