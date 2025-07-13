@@ -31,3 +31,5 @@ def question(session: Session):
     session.add(question)
     session.commit()
     yield question
+    session.delete(question)
+    session.commit()
