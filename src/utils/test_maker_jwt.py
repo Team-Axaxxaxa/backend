@@ -15,29 +15,19 @@ from src.db import get_session
 from src.models import TestTaker
 from src.utils.settings import get_settings
 
-DURATION = 30
 
 def create_access_token(id: str) -> str:
     to_encode = {'id': id}
-    expire = datetime.now(timezone.utc) + timedelta(days=DURATION)
+    duration = get_settings().TEST_TOKEN_DURATION_MINUTES
+    expire = datetime.now(timezone.utc) + timedelta(days=duration)
     to_encode.update({"exp": expire})
     settings = get_settings()
     encode_jwt = jwt.encode(to_encode, settings.SECRET_KEY)
     return encode_jwt
 
 
-def get_token_depricated(request: Request) -> str:
-    authorization = request.headers.get('Authorization')
-    if not authorization:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Token not found')
-    found = re.search('^Bearer \S+$', authorization)
-    group = found.groups()[0]
-    if not group:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Токен не корректный')
-    return authorization
-
-
 security = HTTPBearer()
+
 
 def get_token(credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)]):
     return credentials.credentials
