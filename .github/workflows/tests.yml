@@ -35,7 +35,6 @@ jobs:
           services: |
             postgres
             migrator
-            script
             tests
 
       - name: Show Docker Compose Logs for Tests
