@@ -1,6 +1,6 @@
 import pytest
 from sqlalchemy.orm import Session
-from starlette.testclient import TestClient
+from fastapi.testclient import TestClient
 
 from src.__main__ import app
 from src.db import get_session
