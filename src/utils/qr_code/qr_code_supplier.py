@@ -21,7 +21,7 @@ class SimpleQrCodeSupplier(QrCodeSupplier):
         query_params = {
             'data': data,
             'color': color,
-            'bg_color': bg_color,
+            'bgcolor': bg_color,
             'size': f'{size}x{size}'
         }
 
