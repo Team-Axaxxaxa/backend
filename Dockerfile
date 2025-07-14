@@ -40,4 +40,4 @@ FROM base as tester
 
 add tests tests
 
-CMD pytest tests
+CMD pytest tests -vv

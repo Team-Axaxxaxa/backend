@@ -7,6 +7,9 @@ migrate:
 start-app:
 	docker compose up --build -d script
 
+test:
+	docker compose up --build tests
+
 stop:
 	docker compose down
 
