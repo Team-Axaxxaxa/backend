@@ -10,7 +10,6 @@ class QrCodeSupplier(abc.ABC):
 
 
 class SimpleQrCodeSupplier(QrCodeSupplier):
-    @override
     def generate_qr_code_link(
             self,
             data: str,
