@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bullseye as base
+FROM python:3.12-slim-bullseye AS base
 
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
@@ -23,20 +23,20 @@ RUN pip install -r requirements.txt
 
 ADD src src
 
-FROM base as service
+FROM base AS service
 
 EXPOSE 8080
 
 CMD python3 -m src
 
-FROM base as migrator
+FROM base AS migrator
 
 ADD migrations migrations
 ADD alembic.ini .
 
 CMD alembic upgrade head
 
-FROM base as tester
+FROM base AS tester
 
 add tests tests
 
