@@ -2,12 +2,12 @@ from typing import Iterable
 
 from fastapi import APIRouter, Depends, HTTPException, Path
 from pydantic import UUID4
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 from starlette import status
 
 from src.db import get_session
-from src.models import Result, CategoryResult, Category
+from src.models import Result, CategoryResult, Category, QuestionInCategory
 from src.schemas.get_category_results import CategoryResultsResponse, CategoryResultModel
 
 api_router = APIRouter(tags=['Test results'])
@@ -52,7 +52,16 @@ def get_category_result(
         if not category:
             raise BadCategory()
 
-        category_result = CategoryResultModel(category_name=category.name, score=model.score)
+        max_score = (session.query(func.count())
+                    .select_from(QuestionInCategory)
+                    .where(QuestionInCategory.category == category.id)
+                    .scalar())
+
+        category_result = CategoryResultModel(
+            category_name=category.name,
+            score=model.score,
+            max_score=max_score,
+        )
         response_array.append(category_result)
 
     return CategoryResultsResponse(category_results=response_array)
