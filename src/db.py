@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from typing import Iterator
 
 from sqlalchemy import create_engine, Engine
@@ -25,7 +26,9 @@ class EngineContainer:
     def get_engine(self) -> Engine:
         return self.engine
 
-def get_session() -> Iterator[Session]:
+
+@contextmanager
+def session_scope() -> Iterator[Session]:
     session_maker = sessionmaker(EngineContainer().engine)
     session = session_maker()
     try:
@@ -36,3 +39,8 @@ def get_session() -> Iterator[Session]:
         raise exception
     finally:
         session.close()
+
+
+def get_session() -> Iterator[Session]:
+    with session_scope() as session:
+        yield session
