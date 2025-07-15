@@ -1,3 +1,6 @@
+from contextlib import contextmanager
+from typing import Iterator
+
 from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker, Session
 
@@ -9,7 +12,10 @@ class EngineContainer:
         settings = get_settings()
         self.engine = create_engine(
             settings.db_link,
-            isolation_level='READ COMMITTED'
+            isolation_level='READ COMMITTED',
+            pool_size=10,
+            max_overflow=5,
+            pool_recycle=300,
         )
 
     def __new__(cls, *args, **kwargs):
@@ -20,6 +26,21 @@ class EngineContainer:
     def get_engine(self) -> Engine:
         return self.engine
 
-def get_session() -> Session:
+
+@contextmanager
+def session_scope() -> Iterator[Session]:
     session_maker = sessionmaker(EngineContainer().engine)
-    return session_maker()
+    session = session_maker()
+    try:
+        yield session
+        session.commit()
+    except Exception as exception:
+        session.rollback()
+        raise exception
+    finally:
+        session.close()
+
+
+def get_session() -> Iterator[Session]:
+    with session_scope() as session:
+        yield session

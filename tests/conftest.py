@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi.testclient import TestClient
 
 from src.__main__ import app
-from src.db import get_session
+from src.db import get_session, session_scope
 from src.models import Question, Answer
 from src.models.option_enum import OptionEnum
 from src.utils.settings import get_settings
@@ -12,7 +12,8 @@ from src.utils.settings import get_settings
 
 @pytest.fixture
 def session():
-    yield get_session()
+    with session_scope() as session:
+        yield session
 
 
 @pytest.fixture
