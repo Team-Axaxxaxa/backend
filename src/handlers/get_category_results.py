@@ -6,6 +6,7 @@ from src.db import get_session
 from src.schemas.get_category_results import CategoryResultsResponse
 from src.utils.category_result import get_category_result_with_params
 
+
 api_router = APIRouter(tags=['Test results'])
 
 
@@ -44,7 +45,7 @@ def get_category_result_main(
     result = get_category_result_with_params(True, result_id, session)
     return result
 
-
+  
 @api_router.get(
     '/category_results/other/{result_id}',
     status_code=status.HTTP_200_OK,
