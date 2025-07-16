@@ -26,10 +26,24 @@ def get_random_unfilled_question(
     test_taker: TestTaker = Depends(get_test_taker),
     session: Session = Depends(get_session),
 ):
-    question_query = select(Question).where(
-        ~exists().where(and_(Answer.question == Question.id, Answer.test_taker == test_taker.id))
-    ).where(Question.for_male == test_taker.is_male).order_by(func.random())
-    question = session.scalars(question_query).first()
+    question_query = (
+        select(Question)
+        .outerjoin(
+            Answer,
+            and_(
+                Answer.question == Question.id,
+                Answer.test_taker == test_taker.id
+            )
+        )
+        .where(
+            Answer.id.is_(None),
+            Question.for_male == test_taker.is_male
+        )
+        .order_by(func.random())
+        .limit(1)
+    )
+
+    question = session.scalar(question_query)
 
     if not question:
         raise HTTPException(
