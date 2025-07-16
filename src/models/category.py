@@ -9,4 +9,5 @@ class Category(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, unique=True, server_default=func.gen_random_uuid())
     name = Column(String, unique=True, nullable=False)
-    is_main_category = Column(Boolean, default=False)
+    is_main_category = Column(Boolean, default=False, nullable=False)
+    is_shown = Column(Boolean, default=True, nullable=False)
