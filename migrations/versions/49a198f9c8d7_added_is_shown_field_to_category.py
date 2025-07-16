@@ -1,5 +1,5 @@
 """Added is_shown field to category
-
+Updated last migration
 Revision ID: 49a198f9c8d7
 Revises: 47fa9018012a
 Create Date: 2025-07-16 19:48:54.324785
