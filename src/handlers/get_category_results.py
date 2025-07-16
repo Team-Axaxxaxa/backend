@@ -1,20 +1,12 @@
-from typing import Iterable
-
-from fastapi import APIRouter, Depends, HTTPException, Path
-from pydantic import UUID4
-from sqlalchemy import select
+from fastapi import APIRouter, Depends, Path
 from sqlalchemy.orm import Session
 from starlette import status
 
 from src.db import get_session
-from src.models import Result, CategoryResult, Category
-from src.schemas.get_category_results import CategoryResultsResponse, CategoryResultModel
+from src.schemas.get_category_results import CategoryResultsResponse
+from src.utils.category_result import get_category_result_with_params
 
 api_router = APIRouter(tags=['Test results'])
-
-
-class BadCategory(Exception):
-    pass
 
 
 @api_router.get(
@@ -31,28 +23,41 @@ def get_category_result(
     result_id: str = Path(...),
     session: Session = Depends(get_session),
 ):
-    result_uuid = UUID4(result_id)
-    result_query = select(Result).where(Result.id == result_uuid)
-    result = session.scalar(result_query)
+    result = get_category_result_with_params(None, result_id, session)
+    return result
 
-    if not result:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail='Не найден результат с таким id'
-        )
 
-    category_result_models_query = select(CategoryResult).where(CategoryResult.result == result.id)
-    category_result_models: Iterable[CategoryResult] = session.scalars(category_result_models_query).all()
+@api_router.get(
+    '/category_results/main/{result_id}',
+    status_code=status.HTTP_200_OK,
+    response_model=CategoryResultsResponse,
+    responses= {
+        status.HTTP_404_NOT_FOUND: {
+            'description': 'Не найден результат с таким id',
+        }
+    },
+)
+def get_category_result_main(
+    result_id: str = Path(...),
+    session: Session = Depends(get_session),
+):
+    result = get_category_result_with_params(True, result_id, session)
+    return result
 
-    response_array = []
-    for model in category_result_models:
-        category_query = select(Category).where(Category.id == model.category)
-        category: Category = session.scalar(category_query)
 
-        if not category:
-            raise BadCategory()
-
-        category_result = CategoryResultModel(category_name=category.name, score=model.score)
-        response_array.append(category_result)
-
-    return CategoryResultsResponse(category_results=response_array)
+@api_router.get(
+    '/category_results/other/{result_id}',
+    status_code=status.HTTP_200_OK,
+    response_model=CategoryResultsResponse,
+    responses= {
+        status.HTTP_404_NOT_FOUND: {
+            'description': 'Не найден результат с таким id',
+        }
+    },
+)
+def get_category_result_other(
+    result_id: str = Path(...),
+    session: Session = Depends(get_session),
+):
+    result = get_category_result_with_params(False, result_id, session)
+    return result
