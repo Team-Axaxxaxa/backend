@@ -37,6 +37,9 @@ def get_category_result_with_params(
         category_query = select(Category).where(Category.id == model.category)
         category: Category = session.scalar(category_query)
 
+        if not category.is_shown:
+            continue
+
         if is_main_categories is not None and category.is_main_category != is_main_categories:
             continue
 
