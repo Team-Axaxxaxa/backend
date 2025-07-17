@@ -31,7 +31,7 @@ def create_result(
     session: Session = Depends(get_session),
 ):
     if test_taker.result:
-        return ResultResponse(id=test_taker.result.id)
+        return ResultResponse(id=test_taker.result)
 
     answer_count = get_answers_count(test_taker, session)
 
